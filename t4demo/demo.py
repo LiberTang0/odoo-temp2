@@ -58,26 +58,6 @@ class Demo(object):
             self._fake.seed(self._seed)
         return self._fake
     
-        
-    def demo_get_values(self, cr, uid, values={}, context=None):
-        context = context or {}
-        res = values
-        if context.get('demo'):
-            method = context.get('demo_method', 'demo_values')
-            except_if(not hasattr(self, method), msg="Method %s() is not implemented for model '%s'" % (method, self._name))
-            args = context.get('demo_args', [])
-            kwargs = context.get('demo_kwargs', {})
-            kwargs.update({'values': values.copy()})
-            code = "self.%s(cr, uid, *args, **kwargs)" % method
-            _logger.info("_get_values code: %s" % code)
-            _logger.info("_get_values args: %s, kwargs: %s" % (args, kwargs))
-            fake_values = eval(code)
-            context.pop('demo')
-            context.get('demo_args') and context.pop('demo_args')
-            context.get('demo_kwargs') and context.pop('demo_kwargs')
-            context.get('demo_method') and context.pop('demo_method')
-            res = fake_values
-        return res
     
     @staticmethod
     def demo_values_decorator(func):
